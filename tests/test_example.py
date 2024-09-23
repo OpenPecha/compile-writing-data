@@ -1,4 +1,4 @@
-from project_name.example import add_one
+from compile_creative_writing.pdf_to_txt_2 import add_one
 
 
 def test_add_one():
