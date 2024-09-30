@@ -6,7 +6,7 @@ from tibcleaner.docx_to_txt import docx_to_txt
 from tibcleaner.utils import _mkdir
 from tibcleaner.checkpoint import load_checkpoints
 
-output_dir = Path("data/txt/DOH")
+output_dir = Path("data/txt/yigdrel")
 files = list(Path("data/DOH").rglob("*.docx"))
 _mkdir(output_dir)
 

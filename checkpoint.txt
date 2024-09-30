@@ -1,2 +1,8 @@
 data/DRC/Choejung ind. monlam uni converted PDF.pdf
 data/DRC/Dhomgyun Monlam unifont Final.pdf
+data/DOH/Nangsi Correspdc..docx
+data/DOH/doh_yigdrel.docx
+data/DOH/Nangsi Tour Report/Mainpat Tour Report- 03.07.2024.docx
+data/DOH/Nangsi Tour Report/mainpat-tour-report-2023.docx
+data/DOH/Nangsi Tour Report/final-auroville-visit-report MAY 2024.docx
+data/DOH/Nangsi Tour Report/Mainpat Tour Report- 25.06.2024.docx
