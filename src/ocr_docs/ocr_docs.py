@@ -89,14 +89,14 @@ def process_images_in_directory(images_dir, OCR_json_root, OCR_txt_root):
 
 def main():
     check_google_credentials()
-    images_dir = Path("data/scanned_docs/DOH")
-    OCR_json_root = Path("data/ocr_json/DOH")
-    OCR_txt_root = Path("data/ocr_txt/DOH")
+    input_images_dir = Path("data/scanned_docs/DOE")
+    OCR_json_root = Path("data/ocr_json/DOE")
+    OCR_txt_root = Path("data/ocr_txt/DOE")
 
     OCR_json_root.mkdir(parents=True, exist_ok=True)
     OCR_txt_root.mkdir(parents=True, exist_ok=True)
 
-    process_images_in_directory(images_dir, OCR_json_root, OCR_txt_root)
+    process_images_in_directory(input_images_dir, OCR_json_root, OCR_txt_root)
 
 if __name__ == "__main__":
     main()

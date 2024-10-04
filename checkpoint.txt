@@ -6,3 +6,4 @@ data/DOH/Nangsi Tour Report/Mainpat Tour Report- 03.07.2024.docx
 data/DOH/Nangsi Tour Report/mainpat-tour-report-2023.docx
 data/DOH/Nangsi Tour Report/final-auroville-visit-report MAY 2024.docx
 data/DOH/Nangsi Tour Report/Mainpat Tour Report- 25.06.2024.docx
+data/cta_docs/DOE/ཡིག་བསྐུར།.pdf
