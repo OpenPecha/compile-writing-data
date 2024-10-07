@@ -6,7 +6,6 @@ import os
 
 
 def extract_tibetan_text_saldak(lines, filename):
-    """Extract Tibetan text from saldak and include metadata."""
     title_regex = r'^(.*?)༄༅།'
     json_data = []
     current_title = None

@@ -2,16 +2,23 @@ import re
 from pathlib import Path
 
 
+def contains_tibetan(text: str) -> bool:
+    return bool(re.search(r'[\u0F00-\u0FFF]', text))
+
+
 def clean_text(text: str) -> str:
-    """Removes text before the first occurrence of '༄༅།'."""
-    match = re.search(r'༄༅།', text)
+    lines = text.splitlines()
+    tibetan_lines = [line for line in lines if contains_tibetan(line)]
+    cleaned_text = '\n'.join(tibetan_lines)
+
+    match = re.search(r'༄༅།', cleaned_text)
     if match:
-        return text[match.start():].strip()
-    return text
+        return cleaned_text[match.start():].strip()
+
+    return cleaned_text
 
 
 def clean_tibetan_files(input_dir: Path, output_dir: Path):
-    """Cleans text in all txt files by removing text before '༄༅།' and preserving directory structure."""
     for txt_file in input_dir.rglob('*.txt'):
         with txt_file.open(encoding='utf-8') as file:
             text = file.read()
