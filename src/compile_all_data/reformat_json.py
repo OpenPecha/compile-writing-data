@@ -118,8 +118,8 @@ def process_directory(input_dir, output_dir):
 
 
 def main():
-    input_dir = 'data/compile_all_data/news_data/news_articles'
-    output_dir = 'data/compile_all_data/output_reformat_data'
+    input_dir = 'data/compile_scrapped_data/news_data/news_articles'
+    output_dir = 'data/compile_scrapped_data/output_reformat_data'
 
     process_directory(input_dir, output_dir)
 
