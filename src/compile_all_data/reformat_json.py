@@ -4,18 +4,23 @@ import unicodedata
 import uuid
 from multiprocessing import Pool, cpu_count
 
+
 def ensure_output_dir(output_dir):
     os.makedirs(output_dir, exist_ok=True)
+
 
 def load_json(input_file):
     with open(input_file, 'r', encoding='utf-8') as f:
         return json.load(f)
 
+
 def remove_non_unicode_characters(text):
     return ''.join(c for c in text if unicodedata.category(c) not in ('Cn', 'Co', 'Cs') and ord(c) <= 0x10FFFF)
 
+
 def remove_unusual_line_terminators(text):
     return text.replace('\u2028', '').replace('\u2029', '')
+
 
 def combine_title_and_text(entry):
     if 'data' in entry:
@@ -27,6 +32,7 @@ def combine_title_and_text(entry):
     else:
         print(f"'data' key not found in entry: {entry}")
         return ''
+
 
 def extract_metadata(entry):
     if 'data' in entry:
@@ -41,9 +47,11 @@ def extract_metadata(entry):
         print(f"'data' key not found in entry: {entry}")
         return {'URL': '', 'Author': '', 'Date': '', 'Tags': []}
 
+
 def save_json(data, file_path):
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
+
 
 def extract_data(input_file):
     combined_data_list = []
@@ -55,7 +63,7 @@ def extract_data(input_file):
         combined_text = combine_title_and_text(entry)
         if combined_text:
             combined_text = remove_unusual_line_terminators(combined_text)
-            combined_text = remove_non_unicode_characters(combined_text)  
+            combined_text = remove_non_unicode_characters(combined_text)
             combined_data_list.append({
                 'id': unique_id,
                 'text': combined_text
@@ -71,15 +79,17 @@ def extract_data(input_file):
 
     return combined_data_list, metadata_list
 
+
 def process_file(input_file):
     print(f"Processing file: {input_file}")
     return extract_data(input_file)
 
+
 def process_directory(input_dir, output_dir):
     ensure_output_dir(output_dir)
     input_files = []
-    folder_count = 0  
-    json_file_count = 0 
+    folder_count = 0
+    json_file_count = 0
 
     for root, dirs, files in os.walk(input_dir):
         folder_count += len(dirs)
@@ -106,11 +116,13 @@ def process_directory(input_dir, output_dir):
 
     print(f"Processed {json_file_count} JSON files.")
 
+
 def main():
     input_dir = 'data/compile_all_data/news_data/news_articles'
     output_dir = 'data/compile_all_data/output_reformat_data'
-    
+
     process_directory(input_dir, output_dir)
+
 
 if __name__ == "__main__":
     main()
