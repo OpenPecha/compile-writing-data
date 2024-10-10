@@ -22,8 +22,7 @@ def create_id_to_text_mapping(texts):
 def gather_text_by_tag(tags_dict, id_to_text):
     result = []
     for tags, ids in tags_dict.items():
-        max_ids = ids[:10] if len(ids) > 10 else ids
-        for unique_id in max_ids:
+        for unique_id in ids:
             if unique_id in id_to_text:
                 result.append({
                     'tags': list(tags),
@@ -44,10 +43,13 @@ def main():
     texts = load_json(texts_path)
 
     tags_dict = group_tags_by_id(metadata)
+
     id_to_text = create_id_to_text_mapping(texts)
+
     result = gather_text_by_tag(tags_dict, id_to_text)
 
-    output_data_path = 'data/compile_all_data/tag_sample_data/tag_10_sample.json'
+    output_data_path = 'data/compile_all_data/final_data/creative_writing.json'
+
     save_to_json(result, output_data_path)
 
 
