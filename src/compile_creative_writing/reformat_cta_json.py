@@ -42,16 +42,16 @@ def process_json_files(input_dir, output_dir):
 
             if isinstance(contents, list):
                 for content in contents:
-                    unique_id = str(uuid.uuid4())  # Generate a unique ID for each entry
+                    unique_id = str(uuid.uuid4())
                     text_data.append(extract_text_data(content, unique_id))
                     metadata_data.append(extract_metadata(content, filename, unique_id))
             else:
                 print(f"Expected a list in file {filename}, but found: {type(contents)}")
 
-    save_to_json(text_data, os.path.join(output_dir, 'cta_text.json'))
-    save_to_json(metadata_data, os.path.join(output_dir, 'cta_metadata.json'))
+    save_to_json(text_data, os.path.join(output_dir, 'ocr_cta_text.json'))
+    save_to_json(metadata_data, os.path.join(output_dir, 'ocr_cta_metadata.json'))
 
 if __name__ == "__main__":
-    input_directory = "data/compile_cta_data/compiled_json"
+    input_directory = "data/compile_cta_data/ocr_compiled_data"
     output_directory = "data/compile_cta_data/reformatted_output"
     process_json_files(input_directory, output_directory)

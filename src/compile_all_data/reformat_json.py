@@ -14,24 +14,41 @@ def load_json(input_file):
         return json.load(f)
 
 
+def save_json(data, file_path):
+    with open(file_path, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+
 def remove_non_unicode_characters(text):
     return ''.join(c for c in text if unicodedata.category(c) not in ('Cn', 'Co', 'Cs') and ord(c) <= 0x10FFFF)
 
 
 def remove_unusual_line_terminators(text):
-    return text.replace('\u2028', '').replace('\u2029', '')
+    return text.replace('\u2028', '').replace('\u2029', '').replace('\u200E', '')
 
 
 def combine_title_and_text(entry):
     if 'data' in entry:
         title = entry['data'].get('title', '')
         text = entry['data'].get('body', {}).get('Text', [])
-
         combined_text = title + ' ' + ' '.join(t.replace('\n', ' ') for t in text).strip()
         return combined_text
     else:
         print(f"'data' key not found in entry: {entry}")
         return ''
+
+
+def clean_tags(title, tags):
+    normalized_title = unicodedata.normalize('NFC', title.strip())
+
+    filtered_tags = [
+        tag for tag in tags
+        if unicodedata.normalize('NFC', tag.strip()) not in normalized_title and tag.count('་') <= 8
+    ]
+
+    cleaned_tags = [tag.replace('Page ', '').replace('page ', '').strip() for tag in filtered_tags]
+
+    return cleaned_tags
 
 
 def extract_metadata(entry):
@@ -48,19 +65,24 @@ def extract_metadata(entry):
         return {'URL': '', 'Author': '', 'Date': '', 'Tags': []}
 
 
-def save_json(data, file_path):
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
-
-
 def extract_data(input_file):
     combined_data_list = []
     metadata_list = []
     data = load_json(input_file)
 
     for entry in data.values():
+        if not isinstance(entry, dict):
+            print(f"Skipping non-dictionary entry: {entry}")
+            continue
+
         unique_id = str(uuid.uuid4())
+        title = entry['data'].get('title', '')
+
+        tags = entry['data'].get('meta_data', {}).get('Tags', ["དྲ་ཐོག་གི་གཏམ་རྒྱུན།"])
+
+        cleaned_tags = clean_tags(title, tags)
         combined_text = combine_title_and_text(entry)
+
         if combined_text:
             combined_text = remove_unusual_line_terminators(combined_text)
             combined_text = remove_non_unicode_characters(combined_text)
@@ -68,11 +90,12 @@ def extract_data(input_file):
                 'id': unique_id,
                 'text': combined_text
             })
+
             metadata = extract_metadata(entry)
+            metadata['Tags'] = cleaned_tags
             metadata_list.append({
                 'id': unique_id,
                 'source': metadata['URL'],
-                # 'authors': metadata['Author'],
                 'date': metadata['Date'],
                 'tags': metadata['Tags']
             })
@@ -87,6 +110,7 @@ def process_file(input_file):
 
 def process_directory(input_dir, output_dir):
     ensure_output_dir(output_dir)
+
     input_files = []
     folder_count = 0
     json_file_count = 0

@@ -11,7 +11,6 @@ def extract_tibetan_text_saldak(lines, filename):
     current_title = None
     current_text = []
 
-    # Extract type from filename without the extension
     base_filename = os.path.splitext(filename)[0]  # Remove extension
     type_value = base_filename.split('_')[1] if '_' in base_filename else "unknown"
 
